@@ -1,31 +1,30 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.3"
-
+    compileSdkVersion 34
     defaultConfig {
-        minSdkVersion 15
-        //noinspection OldTargetApi
-        targetSdkVersion 23
+        minSdkVersion 23
+        targetSdkVersion 34
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true        
     }
     buildTypes {
         release {
+            zipAlignEnabled true
+            jniDebuggable false
+            renderscriptDebuggable false
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 }
 
 dependencies {
-    //noinspection GradleDependency
-    compile 'com.android.support:appcompat-v7:23.4.0'
-    //noinspection GradleDependency
-    compile 'com.android.support:support-v4:23.4.0'
-    compile fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
-    compile files('libs/Corona.jar')
-    compile files('libs/JNLua.jar')
-    compile files('libs/network.jar')
+    implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation files('libs/Corona.jar')
+    implementation files('libs/JNLua.jar')
+    implementation files('libs/network.jar')
 }

@@ -20,17 +20,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Contacts.People;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.ListFragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v4.widget.SearchViewCompat;
-import android.support.v4.widget.SearchViewCompat.OnCloseListenerCompat;
-import android.support.v4.widget.SearchViewCompat.OnQueryTextListenerCompat;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
@@ -38,6 +27,17 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
+
+import androidx.core.view.MenuItemCompat;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.ListFragment;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.CursorLoader;
+import androidx.loader.content.Loader;
+import androidx.appcompat.widget.SearchView;
+
 
 /**
  * Demonstration of the use of a CursorLoader to load and display contacts
@@ -94,7 +94,7 @@ public class LoaderCursorSupport extends FragmentActivity {
             getLoaderManager().initLoader(0, null, this);
         }
 
-        @Override public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        /*@Override public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
             // Place an action bar item for searching.
             MenuItem item = menu.add("Search");
             item.setIcon(android.R.drawable.ic_menu_search);
@@ -136,7 +136,47 @@ public class LoaderCursorSupport extends FragmentActivity {
                 });
                 MenuItemCompat.setActionView(item, searchView);
             }
+        }*/
+
+        @Override
+        public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+            // Place an action bar item for searching.
+            MenuItem item = menu.add("Search");
+            item.setIcon(android.R.drawable.ic_menu_search);
+            MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_ALWAYS
+                    | MenuItemCompat.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
+
+            // Create the SearchView
+            final SearchView searchView = new SearchView(getActivity());
+            MenuItemCompat.setActionView(item, searchView);
+
+            // Set up the QueryTextListener
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    // Handle the query submission
+                    return true;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    // Handle the query text change
+                    // You can implement your search logic here
+                    return true;
+                }
+            });
+
+            // Set up the CloseListener
+            searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+                @Override
+                public boolean onClose() {
+                    // Handle the search view closing
+                    // You can clear the search here if needed
+                    return true;
+                }
+            });
         }
+
 
         @Override public void onListItemClick(ListView l, View v, int position, long id) {
             // Insert desired behavior here.
